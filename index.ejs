@@ -1,0 +1,94 @@
+<html>
+      <head>
+        <script>
+              function check(value)
+              {
+                document.getElementById("state").disabled = false;
+                var xhttp;
+                if (value.length == 0) {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+                }
+                xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                var response = JSON.parse(this.responseText);
+                console.log('response',response);
+                var html = '<option value="">select</option>';
+                for(var i= 0; i<response.state.length;i++)
+                {
+                html += '<option value="'+response.state[i].name+'">'+response.state[i].name+'</option>';
+                }
+                console.log('html',html);
+                document.getElementById("state").innerHTML = html;
+                }
+                };
+                xhttp.open("GET", "getstate?q="+value, true);
+                xhttp.send();
+              }
+              function check1(value)
+              {
+                document.getElementById("city").disabled = false;
+                var xhttp;
+                if (value.length == 0) {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+                }
+                   xhttp = new XMLHttpRequest();
+                  xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                   var response = JSON.parse(this.responseText);
+                   console.log(response);
+                   var html = '<option value="">select</option>';
+                   for(var i= 0; i<response.city.length;i++){
+                   html += '<option value="'+response.city[i].name+'">'+response.city[i].name+'</option>'
+                   }
+                     document.getElementById("city").innerHTML = html;
+                   }
+                  };
+                  xhttp.open("GET", "getcity?q="+value, true);
+                  xhttp.send();
+              }
+              function check2(value)
+              {
+                var xhttp;
+                if (value.length == 0) {
+                return;
+                }
+                   xhttp = new XMLHttpRequest();
+                  xhttp.onreadystatechange = function() {
+                  if (this.readyState == 4 && this.status == 200) {
+                    xhttp.open("GET", "data?q="+value, true);
+                     xhttp.send();
+                  }
+                  
+                  };
+                  
+              }
+          
+          </script>
+      </head>
+<body>
+                <form method="GET" action="/data">
+                <select id="country" onchange="check(this.value)">
+                <option>select country</option>
+                <%for(var i=0;i<country.length;i++){%>
+                  <option><%=country[i].name%></option>
+                <%}%>
+          </select>
+        
+
+            <select id="state" disabled onchange="check1(this.value)">
+                <option>select state</option>
+            </select>
+            
+
+           
+              <select id="city" disabled onchange="check2(this.value)">
+                  <option>select city</option>
+                   </select>
+                   <br>
+                   <input type="submit" value="ok"></form>
+              
+  </body>
+</html>
